@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './StyleDropdown.css';
 
-const options = ['Lean',' Reg', 'Athletic' , ' Big'];
+const options = ['Lean', 'Reg', 'Athletic', 'Big'];
 
-export default function StyleDropdown() {
+export default function StyleDropdown({ layout }) {
   const [selected, setSelected] = useState('Modern');
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef();
@@ -18,8 +18,10 @@ export default function StyleDropdown() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  const isDark = layout === 2;
+
   return (
-    <div className="dropdown-wrapper" ref={dropdownRef}>
+    <div className={`dropdown-wrapper ${isDark ? 'dark' : 'light'}`} ref={dropdownRef}>
       <button
         className="dropdown-trigger"
         onClick={() => setOpen(!open)}
