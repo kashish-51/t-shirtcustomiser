@@ -1,4 +1,5 @@
-import TshirtCustomizerApp from "./component/TshirtCustomiserApp"
+import Product from "./component/Product"
+import './App.css'
 
 
 function App() {
@@ -6,7 +7,8 @@ function App() {
 
   return (
     <>
-    <TshirtCustomizerApp/>
+
+  <Product/>
     </>
   )
 }
