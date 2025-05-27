@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import StyleDropdown from "./StyleDropdown";
+import Menu from "./Menu";
 
 const PRODUCTS = ["tshirt", "hoodie", "sleevie", "cap"];
 const BUILDS = ["lean", "reg", "athletic", "big"];
@@ -12,7 +13,6 @@ export default function Product() {
   const [weight, setWeight] = useState("80kg");
   const [build, setBuild] = useState("athletic");
   const [text, setText] = useState("");
-  const [layout, setLayout] = useState(0); // 0 = default, 1, 2 = other layouts
 
   const onDrop = (acceptedFiles) => {
     const file = acceptedFiles[0];
@@ -27,118 +27,79 @@ export default function Product() {
     multiple: false,
   });
 
-  useEffect(() => {
-    const handleKeyPress = (e) => {
-      if (e.altKey && e.shiftKey && e.key.toLowerCase() === "q") {
-        setLayout((prev) => (prev + 1) % 3);
-      }
-    };
-    window.addEventListener("keydown", handleKeyPress);
-    return () => window.removeEventListener("keydown", handleKeyPress);
-  }, []);
-
-  useEffect(() => {
-  document.body.style.backgroundColor = layout === 1 ? 'white' : '#111';
-}, [layout]);
-
-  const layoutStyles = [
-    "bg-gradient-to-br from-blue-50 to-blue-100 text-gray-800",
-    "bg-gradient-to-br from-yellow-50 to-yellow-200 text-yellow-900",
-    "bg-gradient-to-br from-zinc-800 to-zinc-900 text-white"
-  ];
-
-  const containerShadow = layout === 2 ? "bg-zinc-800 shadow-lg" : "bg-white shadow";
-
   return (
-    <div className={`min-h-screen ${layoutStyles[layout]} font-sans space-y-6 p-6`}>
+    <div className="min-h-screen bg-white text-black font-sans space-y-6 p-4 sm:p-6">
       <div className="max-w-5xl mx-auto space-y-6">
         {/* Top Section: Dropzone and Form Inputs */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
           {/* Dropzone */}
           <div
             {...getRootProps()}
-            className={`border-2 border-dashed border-gray-400 rounded p-8 text-center cursor-pointer h-full ${containerShadow}`}
+            className="md:col-span-2 border-2 border-dashed border-gray-400 rounded p-8 text-center cursor-pointer h-full bg-white shadow flex items-center justify-center min-h-[200px]"
           >
             <input {...getInputProps()} />
             {isDragActive ? (
-              <p>Drop the image here...</p>
+              <p className="text-gray-600">Drop the image here...</p>
             ) : (
-              <p>Drag 'n' drop an image here, or click to select</p>
+              <p className="text-gray-600">Drag & drop an image here, or click to select</p>
             )}
           </div>
 
-          {/* Height, Weight, Build Dropdown */}
-          <div className={`${containerShadow} p-4 rounded`}>
-            <label className="block font-semibold mb-1">Height</label>
-            <input
-  className={`w-full border rounded px-3 py-2 mb-3 ${
-    layout === 2
-      ? "bg-zinc-700 border-gray-500 text-white placeholder-gray-300"
-      : "border-gray-300 text-black"
-  }`}
-  value={height}
-  onChange={(e) => setHeight(e.target.value)}
-/>
+          {/* Inputs */}
+          <div className="p-4 rounded space-y-4">
+<div className="w-[var(--width)] max-w-[90vw] mb-4">
+  <label className="block font-semibold mb-1">Height</label>
+  <input
+    type="number"
+    className="w-full border border-gray-300 rounded px-3 py-2 text-black bg-transparent"
+    value={height}
+    onChange={(e) => setHeight(e.target.value)}
+    placeholder="e.g. 180cm"
+    min="0"
+    step="1"
+  />
+</div>
 
-            <label className="block font-semibold mb-1">Weight</label>
-           <input
-  className={`w-full border rounded px-3 py-2 mb-3 ${
-    layout === 2
-      ? "bg-zinc-700 border-gray-500 text-white placeholder-gray-300"
-      : "border-gray-300 text-black"
-  }`}
-  value={height}
-  onChange={(e) => setWeight(e.target.value)}
-/>
+<div className="w-[var(--width)] max-w-[90vw] mb-4">
+  <label className="block font-semibold mb-1">Weight</label>
+  <input
+    type="number"
+    className="w-full border border-gray-300 rounded px-3 py-2 text-black bg-transparent"
+    value={weight}
+    onChange={(e) => setWeight(e.target.value)}
+    placeholder="e.g. 80kg"
+    min="0"
+    step="1"
+  />
+</div>
 
-            <label className="block font-semibold mb-1">Build</label>
-            <StyleDropdown layout={layout} />
+
+
+            <div>
+              <label className="block font-semibold mb-1">Build</label>
+              {/* Assuming StyleDropdown handles full width internally; otherwise wrap with w-full */}
+              <StyleDropdown layout={0} />
+            </div>
           </div>
         </div>
 
-        {/* Select Product Buttons */}
+        {/* Product Selector */}
         <div>
           <label className="block font-semibold mb-2">Select Product</label>
-          <div className="flex flex-wrap gap-2">
-            {PRODUCTS.map((item) => (
-              <button
-                key={item}
-                onClick={() => setProductType(item)}
-               className={`
-  px-4 py-2 rounded border transition-colors duration-200 relative
-  ${
-    productType === item
-      ? layout === 2
-        ? "bg-zinc-700 border-white text-white"
-        : "bg-white border-gray-800 text-gray-900"
-      : layout === 2
-        ? "bg-zinc-800  text-white hover:bg-zinc-700"
-        : "bg-blue-50  text-gray-500 hover:bg-blue-200"
-  }
-`}
-              >
-                {item}
-                {productType === item && (
-                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-black rounded" />
-                )}
-              </button>
-            ))}
-          </div>
+          <Menu />
         </div>
 
-        {/* Image Preview Section */}
+        {/* Image Preview */}
         {image && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
-            {/* Uploaded Image */}
             <div>
               <img
                 src={image}
                 alt="Large preview"
-                className="w-full rounded shadow"
+                className="w-full rounded shadow max-h-[400px] object-contain"
               />
             </div>
 
-            {/* Product Overlay Preview */}
             <div className="relative w-full max-w-xs mx-auto">
               <img
                 src={`/products/${productType}.png`}
@@ -148,7 +109,7 @@ export default function Product() {
               <img
                 src={image}
                 alt="Small preview"
-                className="absolute top-1/2 left-1/2 w-24 h-24 transform -translate-x-1/2 -translate-y-1/2 object-contain"
+                className="absolute top-1/2 left-1/2 w-24 h-24 transform -translate-x-1/2 -translate-y-1/2 object-contain rounded-full border-2 border-white shadow"
               />
             </div>
           </div>
@@ -156,8 +117,7 @@ export default function Product() {
 
         {/* Text Area */}
         <textarea
-          className={`w-full border border-gray-300 rounded p-3 h-32 resize-none ${containerShadow}`}
-          rows={3}
+          className="w-full border border-gray-300 rounded p-3 h-32 resize-none bg-white shadow"
           maxLength={200}
           placeholder="Type text to print (max 3 lines)"
           value={text}

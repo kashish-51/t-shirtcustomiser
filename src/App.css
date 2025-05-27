@@ -1,0 +1,61 @@
+/* App.css or main CSS file */
+html, body {
+  font-family:  sans-serif;
+}
+
+
+.hover-underline {
+  display: inline-block;
+  position: relative;
+}
+
+.hover-underline::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 0.5px;
+  background-color: black;
+  transition: width 0.3s ease-in-out;
+}
+
+.hover-underline:hover::after {
+  width: 100%;
+}
+
+/* App.css */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+:root {
+  --width: 300px;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --width: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --width: 90vw;
+  }
+}
+

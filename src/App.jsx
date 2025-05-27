@@ -1,16 +1,12 @@
-import Product from "./component/Product"
-import './App.css'
-
-
+import React from 'react';
+import './App.css'; // Assuming you have some styles in App.css
+import Product from './component/Product';
 function App() {
-  
-
   return (
-    <>
-
-  <Product/>
-    </>
-  )
+    <main>
+      <Product/>
+    </main>
+  );
 }
 
-export default App
+export default App;

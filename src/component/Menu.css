@@ -1,0 +1,61 @@
+.menu-container {
+  font-family: system-ui, sans-serif;
+  display: flex;
+  justify-content: flex-start;
+  padding: 1rem;
+  /* Prevent wrapping so everything stays on one line */
+  overflow-x: auto;       /* enable horizontal scroll on overflow */
+  -webkit-overflow-scrolling: touch; /* smooth scrolling on iOS */
+}
+
+.menu-list {
+  display: flex;
+  gap: 1rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-wrap: nowrap;     /* no wrapping */
+}
+
+.menu-link {
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  color: black;
+  position: relative;
+  transition: background-color 0.2s ease;
+  white-space: nowrap; /* prevent breaking mid-word */
+  flex-shrink: 0;      /* prevent shrinking so width stays intact */
+}
+
+.menu-link:hover,
+.menu-link:focus-visible {
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 6px;
+}
+
+.menu-link.active::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: 100%;
+  background: black;
+}
+
+/* On small screens, keep horizontal scrolling but add some padding */
+@media (max-width: 768px) {
+  .menu-container {
+    padding: 0.5rem 1rem;
+  }
+
+  /* Keep menu list horizontal with scroll */
+  .menu-list {
+    gap: 0.75rem;
+  }
+
+  /* No width change for links, keep inline */
+  .menu-link {
+    padding: 0.75rem 1rem;
+  }
+}
